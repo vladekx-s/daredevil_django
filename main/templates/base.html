@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
@@ -14,17 +19,21 @@
         <div class="hat">
             <a href="{% url 'home' %}" class="logo">
                 <img src="{% static 'images/dd_logo.png' %}" alt="logo">
-                <span class="upper">DAREDEVIL<span class="lower">.django</span></span>
+
+                <span class="logo_text">
+                    <span class="upper">DAREDEVIL</span>
+                    <span class="lower">.django</span>
+                </span>
             </a>
 
             <nav>
-                <a href="{% url 'home' %}">Главная</a>
+                <a href="{% url 'home' %}">ГЛАВНАЯ</a>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'profile'%}">{{ user.username }}</a>
-                    <a href="{% url 'logout'%}">Выйти</a>
+                <a href="{% url 'profile'%}">{{ user.username }}</a>
+                <a href="{% url 'logout'%}">ВЫЙТИ</a>
                 {% else %}
-                    <a href="{% url 'registration'%}">Регистрация</a>
-                    <a href="{% url 'login'%}">Вход</a>
+                <a href="{% url 'registration'%}">РЕГИСТРАЦИЯ</a>
+                <a href="{% url 'login'%}">ВХОД</a>
                 {% endif %}
             </nav>
         </div>
