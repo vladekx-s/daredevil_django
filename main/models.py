@@ -1,26 +1,44 @@
 from django.db import models
 from django.utils.text import slugify   
+from django.contrib.auth.models import AbstractUser
 
-class User(models.Model):
-    # id, name, username, email, password, avatar, watched_list
-    ...
-    
-    
-class Resource(models.Model):
-    # source, name, slug, created_at, description
-    name = models.CharField(max_length=100)
-    slug = models.CharField(max_length=100, unique=True)
-    description = models.TextField(blank=True)
-    rating = models.DecimalField(max_digits=5, decimal_places=2)
-    main_image = models.ImageField(upload_to='resources/main')
+class User(AbstractUser):
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    biography = models.TextField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
+    def __str__(self) -> str:
+        return self.username
     
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.slug)
-        super().save(*args, **kwargs)
     
+    class Meta:
+        ordering = ['-date_joined']
+    
+    
+class Episodes(models.Model):
+    season = models.PositiveSmallIntegerField()
+    episode = models.PositiveSmallIntegerField()
+    title = models.CharField(max_length=250)
+    description = models.TextField(blank=True)  
+          
+    created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self) -> str:
-        return self.name
+        #               Как "%.2d" в С
+        return f"{self.season:02d}:{self.episode:02d} - {self.title}"
+    
+    class Meta:
+        ordering = ['-season', '-episode']
+        
+        
+class WatchHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    episode = models.ForeignKey(Episodes, on_delete=models.CASCADE)
+    progress = models.PositiveSmallIntegerField(default=0)
+    watched_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self) -> str:
+        return f"{self.user} - {self.episode}"
+    
+    class Meta:
+        ordering = ['-watched_at']

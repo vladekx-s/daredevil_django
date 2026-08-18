@@ -2,8 +2,17 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.get_home_page),
-    path('player/', views.get_player_page),
-    path('wiki/', views.get_wiki_page),
-    path('profile/', views.get_profile_page),
+    path('', views.home_page, name='home'),
+    
+    path('player/<int:season>/<int:episode>', views.player_page, name='player'),
+    
+    path('wiki/', views.wiki_page),
+    
+    path('profile/', views.profile_page, name='profile'),
+    
+    path('login/', views.login_user, name='login'),
+    
+    path('logout/', views.logout_user, name='logout'),
+    
+    path('registration/', views.registration_user, name='registration'),
 ]
